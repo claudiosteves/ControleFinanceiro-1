@@ -21,7 +21,7 @@ public class ListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Chamar a MainActivity
-                Intent intencao = new Intent(getApplicationContext(), ReceitaActivity.class);
+                Intent intencao = new Intent(getApplicationContext(), DespesaActivity.class);
                 startActivity(intencao);
             }
         });
