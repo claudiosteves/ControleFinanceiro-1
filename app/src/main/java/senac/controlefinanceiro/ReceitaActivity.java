@@ -15,7 +15,9 @@ import java.util.Calendar;
 
 public class ReceitaActivity extends AppCompatActivity {
 
+    EditText valorReceita;
     EditText dataReceita;
+    EditText descricaoReceita;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,8 @@ public class ReceitaActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         dataReceita = findViewById(R.id.data_receita);
+        valorReceita = findViewById(R.id.valor_receita);
+        descricaoReceita = findViewById(R.id.descricao_receita);
     }
 
     public void calendario(View view) {
