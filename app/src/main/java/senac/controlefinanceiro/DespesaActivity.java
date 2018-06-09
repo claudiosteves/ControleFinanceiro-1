@@ -11,7 +11,12 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+
+import senac.controlefinanceiro.objects.Despesa;
 
 public class DespesaActivity extends AppCompatActivity {
 
@@ -60,6 +65,20 @@ public class DespesaActivity extends AppCompatActivity {
                         }
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
+        } catch (Exception e){
+            Log.e("Despesa", e.getMessage());
+        }
+    }
+
+    public void salvar(View view) {
+        try {
+            Despesa despesa = new Despesa(
+                    Double.parseDouble(valorDespesa.getText().toString()),
+                    new SimpleDateFormat("dd-MM-yyyy").parse(dataDespesa.getText().toString()),
+                    descricaoDespesa.getText().toString()
+            );
+
+
         } catch (Exception e){
             Log.e("Despesa", e.getMessage());
         }
