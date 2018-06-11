@@ -1,5 +1,6 @@
 package senac.controlefinanceiro.objects;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public abstract class Conta {
@@ -26,4 +27,8 @@ public abstract class Conta {
         return descricao;
     }
 
+    @Override
+    public String toString() {
+        return new SimpleDateFormat("dd/MM/yyyy").format(this.data) + " - R$ " + this.valor + " | " + this.descricao;
+    }
 }
