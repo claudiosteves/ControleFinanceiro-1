@@ -63,6 +63,12 @@ public class DespesaActivity extends AppCompatActivity {
 
     public void salvar(View view) {
         try {
+            if (valorDespesa.getText().toString().isEmpty()){
+                valorDespesa.setError("Entre com um valor!");
+
+                return;
+            }
+
             Despesa despesa = new Despesa(
                     Double.parseDouble(valorDespesa.getText().toString()),
                     new SimpleDateFormat("dd-MM-yyyy").parse(dataDespesa.getText().toString()),
