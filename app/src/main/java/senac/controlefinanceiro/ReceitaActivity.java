@@ -11,7 +11,11 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import senac.controlefinanceiro.objects.Despesa;
+import senac.controlefinanceiro.objects.Receita;
 
 public class ReceitaActivity extends AppCompatActivity {
 
@@ -26,14 +30,6 @@ public class ReceitaActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         dataReceita = findViewById(R.id.data_receita);
@@ -60,6 +56,23 @@ public class ReceitaActivity extends AppCompatActivity {
                         }
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
+        } catch (Exception e){
+            Log.e("Receita", e.getMessage());
+        }
+    }
+
+    public void salvar(View view) {
+        try {
+            Receita despesa = new Receita(
+                    Double.parseDouble(valorReceita.getText().toString()),
+                    new SimpleDateFormat("dd-MM-yyyy").parse(dataReceita.getText().toString()),
+                    descricaoReceita.getText().toString()
+            );
+
+            ListActivity.contas.add(despesa);
+
+            finish();
+
         } catch (Exception e){
             Log.e("Receita", e.getMessage());
         }

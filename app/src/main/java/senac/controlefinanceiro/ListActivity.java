@@ -7,6 +7,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -84,6 +86,16 @@ public class ListActivity extends AppCompatActivity implements RapidFloatingActi
         } catch (Exception e){
             Log.e("main", "onCreate: " + e.getMessage());
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+
+        return true;
     }
 
     private void chamarAtividades(int position){
