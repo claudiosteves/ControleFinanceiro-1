@@ -3,6 +3,8 @@ package senac.controlefinanceiro.objects;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import senac.controlefinanceiro.entities.ContaContrato;
+
 public abstract class Conta {
 
     private Double valor;
@@ -31,4 +33,5 @@ public abstract class Conta {
     public String toString() {
         return new SimpleDateFormat("dd/MM/yyyy").format(this.data) + " - R$ " + this.valor + " | " + this.descricao;
     }
+
 }
