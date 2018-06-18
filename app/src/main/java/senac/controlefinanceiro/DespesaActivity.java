@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.zip.Inflater;
 
+import senac.controlefinanceiro.entities.ContaDbHelper;
 import senac.controlefinanceiro.objects.Despesa;
 
 public class DespesaActivity extends AppCompatActivity {
@@ -75,7 +76,10 @@ public class DespesaActivity extends AppCompatActivity {
                     descricaoDespesa.getText().toString()
             );
 
-            ListActivity.contas.add(despesa);
+            ContaDbHelper contaDbHelper = new ContaDbHelper(this);
+            contaDbHelper.Salvar(despesa);
+
+            //ListActivity.contas.add(despesa);
 
             finish();
 

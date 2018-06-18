@@ -23,6 +23,7 @@ import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloating
 import java.util.ArrayList;
 import java.util.List;
 
+import senac.controlefinanceiro.entities.ContaDbHelper;
 import senac.controlefinanceiro.objects.Conta;
 import senac.controlefinanceiro.objects.Despesa;
 import senac.controlefinanceiro.objects.Receita;
@@ -33,9 +34,11 @@ public class ListActivity extends AppCompatActivity implements RapidFloatingActi
     private RapidFloatingActionButton rfaBtn;
     private RapidFloatingActionHelper rfabHelper;
 
+    private ContaDbHelper contaDbHelper = new ContaDbHelper(this);
+
     private ListView listaContas;
 
-    public static List<Conta> contas = new ArrayList<>();
+    public List<Conta> contas = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,8 @@ public class ListActivity extends AppCompatActivity implements RapidFloatingActi
         setSupportActionBar(toolbar);
 
         listaContas = findViewById(R.id.lista_contas);
+        contas = contaDbHelper.Consultar();
+
         ArrayAdapter<String> adapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, contas);
 
         listaContas.setAdapter(adapter);
@@ -86,6 +91,14 @@ public class ListActivity extends AppCompatActivity implements RapidFloatingActi
         } catch (Exception e){
             Log.e("main", "onCreate: " + e.getMessage());
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        contas = contaDbHelper.Consultar();
+        ArrayAdapter<String> adapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, contas);
+        listaContas.setAdapter(adapter);
     }
 
     @Override
