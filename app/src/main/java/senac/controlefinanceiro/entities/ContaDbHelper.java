@@ -37,28 +37,38 @@ public class ContaDbHelper extends SQLiteOpenHelper {
     }
 
     public boolean Salvar(Conta conta){
-        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put(ContaContrato.TabelaConta.COLUMN_NAME_VALOR, conta.getValor());
-        values.put(ContaContrato.TabelaConta.COLUMN_NAME_DATA, new SimpleDateFormat("dd-MM-yyyy").format(conta.getData()));
-        values.put(ContaContrato.TabelaConta.COLUMN_NAME_DESCRICAO, conta.getDescricao());
+            ContentValues values = new ContentValues();
+            values.put(ContaContrato.TabelaConta.COLUMN_NAME_VALOR, conta.getValor());
+            values.put(ContaContrato.TabelaConta.COLUMN_NAME_DATA, new SimpleDateFormat("dd-MM-yyyy").format(conta.getData()));
+            values.put(ContaContrato.TabelaConta.COLUMN_NAME_DESCRICAO, conta.getDescricao());
 
-        String[] args = { Integer.toString(conta.getId()) };
+            String[] args = { Integer.toString(conta.getId()) };
 
-        if (conta.getId() > 0){
-            return db.update(ContaContrato.TabelaConta.TABLE_NAME, values, "_id = ?", args) > 0;
-        } else {
-            return db.insert(ContaContrato.TabelaConta.TABLE_NAME, null, values) > 0;
+            if (conta.getId() > 0){
+                return db.update(ContaContrato.TabelaConta.TABLE_NAME, values, "_id = ?", args) > 0;
+            } else {
+                return db.insert(ContaContrato.TabelaConta.TABLE_NAME, null, values) > 0;
+            }
+        } catch (Exception e){
+            Log.e("ContaDbHelper", "Erro no Salvar, " + e.getMessage());
+            return false;
         }
     }
 
     public boolean Remover(Conta conta){
-        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
 
-        String[] args = { Integer.toString(conta.getId()) };
+            String[] args = { Integer.toString(conta.getId()) };
 
-        return db.delete(ContaContrato.TabelaConta.TABLE_NAME, "_id = ?", args) > 0;
+            return db.delete(ContaContrato.TabelaConta.TABLE_NAME, "_id = ?", args) > 0;
+        } catch (Exception e){
+            Log.e("ContaDbHelper", "Erro no Remover, " + e.getMessage());
+            return false;
+        }
     }
 
     public List<Conta> Consultar(){

@@ -39,14 +39,16 @@ public class DespesaActivity extends AppCompatActivity {
         dataDespesa = findViewById(R.id.data_despesa);
         descricaoDespesa = findViewById(R.id.descricao_despesa);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            Double valorAbs = Math.abs(objDespesa.getValor());
-
-            objDespesa = (Despesa) getIntent().getExtras().getSerializable("objDespesa");
-            dataDespesa.setText(new SimpleDateFormat("dd-MM-yyyy").format(objDespesa.getData()));
-            valorDespesa.setText(valorAbs.toString());
-            descricaoDespesa.setText(objDespesa.getDescricao());
+        try {
+            Bundle extras = getIntent().getExtras();
+            if (extras != null) {
+                objDespesa = (Despesa) getIntent().getExtras().getSerializable("objDespesa");
+                dataDespesa.setText(new SimpleDateFormat("dd-MM-yyyy").format(objDespesa.getData()));
+                valorDespesa.setText(Double.toString(Math.abs(objDespesa.getValor())));
+                descricaoDespesa.setText(objDespesa.getDescricao());
+            }
+        } catch (Exception e){
+            Log.e("Despesa", "Erro OnCreate, " + e.getMessage());
         }
     }
 

@@ -39,12 +39,16 @@ public class ReceitaActivity extends AppCompatActivity {
         valorReceita = findViewById(R.id.valor_receita);
         descricaoReceita = findViewById(R.id.descricao_receita);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            objReceita = (Receita) getIntent().getExtras().getSerializable("objReceita");
-            dataReceita.setText(new SimpleDateFormat("dd-MM-yyyy").format(objReceita.getData()));
-            valorReceita.setText(objReceita.getValor().toString());
-            descricaoReceita.setText(objReceita.getDescricao());
+        try {
+            Bundle extras = getIntent().getExtras();
+            if (extras != null) {
+                objReceita = (Receita) getIntent().getExtras().getSerializable("objReceita");
+                dataReceita.setText(new SimpleDateFormat("dd-MM-yyyy").format(objReceita.getData()));
+                valorReceita.setText(objReceita.getValor().toString());
+                descricaoReceita.setText(objReceita.getDescricao());
+            }
+        } catch (Exception e){
+            Log.e("Receita", "Erro OnCreate, " + e.getMessage());
         }
     }
 
