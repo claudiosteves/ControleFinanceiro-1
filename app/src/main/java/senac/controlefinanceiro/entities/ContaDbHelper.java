@@ -44,7 +44,21 @@ public class ContaDbHelper extends SQLiteOpenHelper {
         values.put(ContaContrato.TabelaConta.COLUMN_NAME_DATA, new SimpleDateFormat("dd-MM-yyyy").format(conta.getData()));
         values.put(ContaContrato.TabelaConta.COLUMN_NAME_DESCRICAO, conta.getDescricao());
 
-        return db.insert(ContaContrato.TabelaConta.TABLE_NAME, null, values) > 0;
+        String[] args = { Integer.toString(conta.getId()) };
+
+        if (conta.getId() > 0){
+            return db.update(ContaContrato.TabelaConta.TABLE_NAME, values, "_id = ?", args) > 0;
+        } else {
+            return db.insert(ContaContrato.TabelaConta.TABLE_NAME, null, values) > 0;
+        }
+    }
+
+    public boolean Remover(Conta conta){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String[] args = { Integer.toString(conta.getId()) };
+
+        return db.delete(ContaContrato.TabelaConta.TABLE_NAME, "_id = ?", args) > 0;
     }
 
     public List<Conta> Consultar(){
@@ -57,12 +71,14 @@ public class ContaDbHelper extends SQLiteOpenHelper {
             while(cursor.moveToNext()) {
                 if (cursor.getDouble(cursor.getColumnIndex(ContaContrato.TabelaConta.COLUMN_NAME_VALOR)) > 0){
                     contas.add(new Receita(
+                            cursor.getInt(cursor.getColumnIndex(ContaContrato.TabelaConta._ID)),
                             cursor.getDouble(cursor.getColumnIndex(ContaContrato.TabelaConta.COLUMN_NAME_VALOR)),
                             new SimpleDateFormat("dd-MM-yyyy").parse(cursor.getString(cursor.getColumnIndex(ContaContrato.TabelaConta.COLUMN_NAME_DATA))),
                             cursor.getString(cursor.getColumnIndex(ContaContrato.TabelaConta.COLUMN_NAME_DESCRICAO))
                     ));
                 } else {
                     contas.add(new Despesa(
+                            cursor.getInt(cursor.getColumnIndex(ContaContrato.TabelaConta._ID)),
                             cursor.getDouble(cursor.getColumnIndex(ContaContrato.TabelaConta.COLUMN_NAME_VALOR)),
                             new SimpleDateFormat("dd-MM-yyyy").parse(cursor.getString(cursor.getColumnIndex(ContaContrato.TabelaConta.COLUMN_NAME_DATA))),
                             cursor.getString(cursor.getColumnIndex(ContaContrato.TabelaConta.COLUMN_NAME_DESCRICAO))

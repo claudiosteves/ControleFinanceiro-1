@@ -74,14 +74,21 @@ public class ReceitaActivity extends AppCompatActivity {
 
     public void salvar(View view) {
         try {
-            Receita receita = new Receita(
+            int id = 0;
+
+            if (objReceita != null){
+                id = objReceita.getId();
+            }
+
+            objReceita = new Receita(
+                    id,
                     Double.parseDouble(valorReceita.getText().toString()),
                     new SimpleDateFormat("dd-MM-yyyy").parse(dataReceita.getText().toString()),
                     descricaoReceita.getText().toString()
             );
 
             ContaDbHelper contaDbHelper = new ContaDbHelper(this);
-            contaDbHelper.Salvar(receita);
+            contaDbHelper.Salvar(objReceita);
 
             //ListActivity.contas.add(despesa);
 

@@ -82,7 +82,14 @@ public class DespesaActivity extends AppCompatActivity {
                 return;
             }
 
+            int id = 0;
+
+            if (objDespesa != null){
+                id = objDespesa.getId();
+            }
+
             Despesa despesa = new Despesa(
+                    id,
                     - Double.parseDouble(valorDespesa.getText().toString()),
                     new SimpleDateFormat("dd-MM-yyyy").parse(dataDespesa.getText().toString()),
                     descricaoDespesa.getText().toString()
