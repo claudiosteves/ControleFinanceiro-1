@@ -1,11 +1,12 @@
 package senac.controlefinanceiro.objects;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import senac.controlefinanceiro.entities.ContaContrato;
 
-public abstract class Conta {
+public abstract class Conta implements Serializable {
 
     private Double valor;
     private Date data;

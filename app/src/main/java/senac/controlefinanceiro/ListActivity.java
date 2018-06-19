@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -48,6 +49,29 @@ public class ListActivity extends AppCompatActivity implements RapidFloatingActi
         setSupportActionBar(toolbar);
 
         listaContas = findViewById(R.id.lista_contas);
+
+        listaContas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                try {
+                    Conta objConta = contas.get(position);
+
+                    if (objConta instanceof Receita){
+                        Intent telaReceita = new Intent(getBaseContext(), ReceitaActivity.class);
+                        telaReceita.putExtra("objReceita", objConta);
+                        startActivity(telaReceita);
+                    } else {
+                        Intent telaDespesa = new Intent(getBaseContext(), DespesaActivity.class);
+                        telaDespesa.putExtra("objDespesa", objConta);
+                        startActivity(telaDespesa);
+                    }
+
+                } catch (Exception e){
+                    Log.e("Click ListViewItem", e.getMessage());
+                }
+            }
+        });
+
         contas = contaDbHelper.Consultar();
 
         ArrayAdapter<String> adapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, contas);

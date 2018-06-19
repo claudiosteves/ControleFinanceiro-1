@@ -71,7 +71,7 @@ public class DespesaActivity extends AppCompatActivity {
             }
 
             Despesa despesa = new Despesa(
-                    Double.parseDouble(valorDespesa.getText().toString()),
+                    - Double.parseDouble(valorDespesa.getText().toString()),
                     new SimpleDateFormat("dd-MM-yyyy").parse(dataDespesa.getText().toString()),
                     descricaoDespesa.getText().toString()
             );
