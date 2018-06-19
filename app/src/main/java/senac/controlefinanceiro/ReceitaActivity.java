@@ -35,13 +35,13 @@ public class ReceitaActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        objReceita = (Receita) getIntent().getExtras().getSerializable("objReceita");
-
         dataReceita = findViewById(R.id.data_receita);
         valorReceita = findViewById(R.id.valor_receita);
         descricaoReceita = findViewById(R.id.descricao_receita);
 
-        if (objReceita != null) {
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            objReceita = (Receita) getIntent().getExtras().getSerializable("objReceita");
             dataReceita.setText(new SimpleDateFormat("dd-MM-yyyy").format(objReceita.getData()));
             valorReceita.setText(objReceita.getValor().toString());
             descricaoReceita.setText(objReceita.getDescricao());

@@ -35,15 +35,17 @@ public class DespesaActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        objDespesa = (Despesa) getIntent().getExtras().getSerializable("objDespesa");
-
         valorDespesa = findViewById(R.id.valor_despesa);
         dataDespesa = findViewById(R.id.data_despesa);
         descricaoDespesa = findViewById(R.id.descricao_despesa);
 
-        if (objDespesa != null) {
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            Double valorAbs = Math.abs(objDespesa.getValor());
+
+            objDespesa = (Despesa) getIntent().getExtras().getSerializable("objDespesa");
             dataDespesa.setText(new SimpleDateFormat("dd-MM-yyyy").format(objDespesa.getData()));
-            valorDespesa.setText(objDespesa.getValor().toString());
+            valorDespesa.setText(valorAbs.toString());
             descricaoDespesa.setText(objDespesa.getDescricao());
         }
     }
