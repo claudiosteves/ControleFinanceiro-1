@@ -24,6 +24,7 @@ public class ReceitaActivity extends AppCompatActivity {
     EditText valorReceita;
     EditText dataReceita;
     EditText descricaoReceita;
+    Receita objReceita;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +35,17 @@ public class ReceitaActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        objReceita = (Receita) getIntent().getExtras().getSerializable("objReceita");
+
         dataReceita = findViewById(R.id.data_receita);
         valorReceita = findViewById(R.id.valor_receita);
         descricaoReceita = findViewById(R.id.descricao_receita);
+
+        if (objReceita != null) {
+            dataReceita.setText(new SimpleDateFormat("dd-MM-yyyy").format(objReceita.getData()));
+            valorReceita.setText(objReceita.getValor().toString());
+            descricaoReceita.setText(objReceita.getDescricao());
+        }
     }
 
     public void calendario(View view) {

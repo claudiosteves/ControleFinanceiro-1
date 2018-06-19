@@ -17,12 +17,14 @@ import java.util.zip.Inflater;
 
 import senac.controlefinanceiro.entities.ContaDbHelper;
 import senac.controlefinanceiro.objects.Despesa;
+import senac.controlefinanceiro.objects.Receita;
 
 public class DespesaActivity extends AppCompatActivity {
 
     EditText valorDespesa;
     EditText dataDespesa;
     EditText descricaoDespesa;
+    Despesa objDespesa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +35,17 @@ public class DespesaActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        objDespesa = (Despesa) getIntent().getExtras().getSerializable("objDespesa");
+
         valorDespesa = findViewById(R.id.valor_despesa);
         dataDespesa = findViewById(R.id.data_despesa);
         descricaoDespesa = findViewById(R.id.descricao_despesa);
+
+        if (objDespesa != null) {
+            dataDespesa.setText(new SimpleDateFormat("dd-MM-yyyy").format(objDespesa.getData()));
+            valorDespesa.setText(objDespesa.getValor().toString());
+            descricaoDespesa.setText(objDespesa.getDescricao());
+        }
     }
 
     public void calendario(View view) {
