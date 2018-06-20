@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -48,6 +49,7 @@ public class ReceitaActivity extends AppCompatActivity {
                 descricaoReceita.setText(objReceita.getDescricao());
             }
         } catch (Exception e){
+            Toast.makeText(this, "Ocorreu um erro...", Toast.LENGTH_LONG).show();
             Log.e("Receita", "Erro OnCreate, " + e.getMessage());
         }
     }
@@ -72,6 +74,7 @@ public class ReceitaActivity extends AppCompatActivity {
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
         } catch (Exception e){
+            Toast.makeText(this, "Ocorreu um erro...", Toast.LENGTH_LONG).show();
             Log.e("Receita", e.getMessage());
         }
     }
@@ -99,6 +102,7 @@ public class ReceitaActivity extends AppCompatActivity {
             finish();
 
         } catch (Exception e){
+            Toast.makeText(this, "Ocorreu um erro...", Toast.LENGTH_LONG).show();
             Log.e("Receita", e.getMessage());
         }
     }

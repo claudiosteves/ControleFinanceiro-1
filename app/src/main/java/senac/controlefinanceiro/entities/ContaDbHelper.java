@@ -54,7 +54,7 @@ public class ContaDbHelper extends SQLiteOpenHelper {
             }
         } catch (Exception e){
             Log.e("ContaDbHelper", "Erro no Salvar, " + e.getMessage());
-            return false;
+            throw e;
         }
     }
 
@@ -67,7 +67,7 @@ public class ContaDbHelper extends SQLiteOpenHelper {
             return db.delete(ContaContrato.TabelaConta.TABLE_NAME, "_id = ?", args) > 0;
         } catch (Exception e){
             Log.e("ContaDbHelper", "Erro no Remover, " + e.getMessage());
-            return false;
+            throw e;
         }
     }
 

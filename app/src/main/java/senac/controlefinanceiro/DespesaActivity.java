@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -48,6 +49,7 @@ public class DespesaActivity extends AppCompatActivity {
                 descricaoDespesa.setText(objDespesa.getDescricao());
             }
         } catch (Exception e){
+            Toast.makeText(this, "Ocorreu um erro...", Toast.LENGTH_LONG).show();
             Log.e("Despesa", "Erro OnCreate, " + e.getMessage());
         }
     }
@@ -72,6 +74,7 @@ public class DespesaActivity extends AppCompatActivity {
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
         } catch (Exception e){
+            Toast.makeText(this, "Ocorreu um erro...", Toast.LENGTH_LONG).show();
             Log.e("Despesa", e.getMessage());
         }
     }
@@ -105,7 +108,12 @@ public class DespesaActivity extends AppCompatActivity {
             finish();
 
         } catch (Exception e){
+            Toast.makeText(this, "Ocorreu um erro...", Toast.LENGTH_LONG).show();
             Log.e("Despesa", e.getMessage());
         }
+    }
+
+    public void remover(View view) {
+
     }
 }
