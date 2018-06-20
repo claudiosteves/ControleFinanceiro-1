@@ -1,6 +1,8 @@
 package senac.controlefinanceiro;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -101,6 +103,41 @@ public class ReceitaActivity extends AppCompatActivity {
 
             finish();
 
+        } catch (Exception e){
+            Toast.makeText(this, "Ocorreu um erro...", Toast.LENGTH_LONG).show();
+            Log.e("Receita", e.getMessage());
+        }
+    }
+
+    public void remover(View view) {
+        try {
+            int id = 0;
+
+            if (objReceita != null){
+                id = objReceita.getId();
+            }
+
+            objReceita = new Receita(
+                    id,
+                    Double.parseDouble(valorReceita.getText().toString()),
+                    new SimpleDateFormat("dd-MM-yyyy").parse(dataReceita.getText().toString()),
+                    descricaoReceita.getText().toString()
+            );
+
+            final ContaDbHelper contaDbHelper = new ContaDbHelper(this);
+
+            new AlertDialog.Builder(this)
+                    .setTitle("Removendo Receita")
+                    .setMessage("Tem certeza que deseja remover essa Receita?")
+                    .setPositiveButton("sim", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            contaDbHelper.Remover(objReceita);
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("não", null)
+                    .show();
         } catch (Exception e){
             Toast.makeText(this, "Ocorreu um erro...", Toast.LENGTH_LONG).show();
             Log.e("Receita", e.getMessage());
