@@ -67,18 +67,20 @@ public class ListActivity extends AppCompatActivity implements RapidFloatingActi
                     }
 
                 } catch (Exception e){
+                    Toast.makeText(getBaseContext(), "Ocorreu um erro...", Toast.LENGTH_LONG).show();
                     Log.e("Click ListViewItem", e.getMessage());
                 }
             }
         });
 
-        contas = contaDbHelper.Consultar();
-
-        ArrayAdapter<String> adapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, contas);
-
-        listaContas.setAdapter(adapter);
-
         try {
+            contas = contaDbHelper.Consultar();
+
+            ArrayAdapter<String> adapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, contas);
+
+            listaContas.setAdapter(adapter);
+
+
             rfaLayout = findViewById(R.id.activity_main_rfal);
             rfaBtn = findViewById(R.id.activity_main_rfab);
 
@@ -113,16 +115,23 @@ public class ListActivity extends AppCompatActivity implements RapidFloatingActi
             ).build();
 
         } catch (Exception e){
-            Log.e("main", "onCreate: " + e.getMessage());
+            Toast.makeText(this, "Ocorreu um erro...", Toast.LENGTH_LONG).show();
+            Log.e("MainActivity", "onCreate: " + e.getMessage());
         }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        contas = contaDbHelper.Consultar();
-        ArrayAdapter<String> adapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, contas);
-        listaContas.setAdapter(adapter);
+        try {
+            contas = contaDbHelper.Consultar();
+            ArrayAdapter<String> adapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, contas);
+            listaContas.setAdapter(adapter);
+        }
+        catch (Exception e){
+            Toast.makeText(this, "Ocorreu um erro...", Toast.LENGTH_LONG).show();
+            Log.e("MainActivity", "onResumo: " + e.getMessage());
+        }
     }
 
     @Override

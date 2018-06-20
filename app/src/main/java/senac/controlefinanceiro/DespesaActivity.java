@@ -1,6 +1,8 @@
 package senac.controlefinanceiro;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -109,11 +111,42 @@ public class DespesaActivity extends AppCompatActivity {
 
         } catch (Exception e){
             Toast.makeText(this, "Ocorreu um erro...", Toast.LENGTH_LONG).show();
-            Log.e("Despesa", e.getMessage());
+            Log.e("Despesa", "Salvar: " + e.getMessage());
         }
     }
 
     public void remover(View view) {
+        try {
+            int id = 0;
 
+            if (objDespesa != null){
+                id = objDespesa.getId();
+            }
+
+            final Despesa despesa = new Despesa(
+                    id,
+                    - Double.parseDouble(valorDespesa.getText().toString()),
+                    new SimpleDateFormat("dd-MM-yyyy").parse(dataDespesa.getText().toString()),
+                    descricaoDespesa.getText().toString()
+            );
+
+            final ContaDbHelper contaDbHelper = new ContaDbHelper(this);
+
+            new AlertDialog.Builder(this)
+                    .setTitle("Removendo Despesa")
+                    .setMessage("Tem certeza que deseja remover essa despesa?")
+                    .setPositiveButton("sim", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            contaDbHelper.Remover(despesa);
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("não", null)
+                    .show();
+        } catch (Exception e){
+            Toast.makeText(this, "Ocorreu um erro...", Toast.LENGTH_LONG).show();
+            Log.e("Despesa", "Remover: " + e.getMessage());
+        }
     }
 }
