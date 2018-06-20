@@ -27,6 +27,7 @@ import java.util.List;
 import senac.controlefinanceiro.entities.ContaDbHelper;
 import senac.controlefinanceiro.objects.Conta;
 import senac.controlefinanceiro.objects.Despesa;
+import senac.controlefinanceiro.objects.ListaPersonalizadaAdapter;
 import senac.controlefinanceiro.objects.Receita;
 
 public class ListActivity extends AppCompatActivity implements RapidFloatingActionContentLabelList.OnRapidFloatingActionContentLabelListListener {
@@ -76,7 +77,9 @@ public class ListActivity extends AppCompatActivity implements RapidFloatingActi
         try {
             contas = contaDbHelper.Consultar();
 
-            ArrayAdapter<String> adapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, contas);
+            //ArrayAdapter<String> adapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, contas);
+
+            ListaPersonalizadaAdapter adapter = new ListaPersonalizadaAdapter(contas, this);
 
             listaContas.setAdapter(adapter);
 
@@ -125,7 +128,10 @@ public class ListActivity extends AppCompatActivity implements RapidFloatingActi
         super.onResume();
         try {
             contas = contaDbHelper.Consultar();
-            ArrayAdapter<String> adapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, contas);
+            //ArrayAdapter<String> adapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, contas);
+
+            ListaPersonalizadaAdapter adapter = new ListaPersonalizadaAdapter(contas, this);
+
             listaContas.setAdapter(adapter);
         }
         catch (Exception e){

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -27,6 +28,7 @@ public class DespesaActivity extends AppCompatActivity {
     EditText valorDespesa;
     EditText dataDespesa;
     EditText descricaoDespesa;
+    FloatingActionButton BtnRemover;
     Despesa objDespesa;
 
     @Override
@@ -41,6 +43,7 @@ public class DespesaActivity extends AppCompatActivity {
         valorDespesa = findViewById(R.id.valor_despesa);
         dataDespesa = findViewById(R.id.data_despesa);
         descricaoDespesa = findViewById(R.id.descricao_despesa);
+        BtnRemover = findViewById(R.id.remove);
 
         try {
             Bundle extras = getIntent().getExtras();
@@ -49,6 +52,8 @@ public class DespesaActivity extends AppCompatActivity {
                 dataDespesa.setText(new SimpleDateFormat("dd-MM-yyyy").format(objDespesa.getData()));
                 valorDespesa.setText(Double.toString(Math.abs(objDespesa.getValor())));
                 descricaoDespesa.setText(objDespesa.getDescricao());
+            } else {
+                BtnRemover.setVisibility(View.INVISIBLE);
             }
         } catch (Exception e){
             Toast.makeText(this, "Ocorreu um erro...", Toast.LENGTH_LONG).show();

@@ -27,6 +27,7 @@ public class ReceitaActivity extends AppCompatActivity {
     EditText valorReceita;
     EditText dataReceita;
     EditText descricaoReceita;
+    FloatingActionButton BtnRemover;
     Receita objReceita;
 
     @Override
@@ -41,6 +42,7 @@ public class ReceitaActivity extends AppCompatActivity {
         dataReceita = findViewById(R.id.data_receita);
         valorReceita = findViewById(R.id.valor_receita);
         descricaoReceita = findViewById(R.id.descricao_receita);
+        BtnRemover = findViewById(R.id.remove);
 
         try {
             Bundle extras = getIntent().getExtras();
@@ -49,6 +51,8 @@ public class ReceitaActivity extends AppCompatActivity {
                 dataReceita.setText(new SimpleDateFormat("dd-MM-yyyy").format(objReceita.getData()));
                 valorReceita.setText(objReceita.getValor().toString());
                 descricaoReceita.setText(objReceita.getDescricao());
+            } else {
+                BtnRemover.setVisibility(View.INVISIBLE);
             }
         } catch (Exception e){
             Toast.makeText(this, "Ocorreu um erro...", Toast.LENGTH_LONG).show();
