@@ -9,10 +9,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
@@ -35,6 +37,7 @@ public class ListActivity extends AppCompatActivity implements RapidFloatingActi
     private RapidFloatingActionLayout rfaLayout;
     private RapidFloatingActionButton rfaBtn;
     private RapidFloatingActionHelper rfabHelper;
+    private SearchView buscador;
 
     private ContaDbHelper contaDbHelper = new ContaDbHelper(this);
 
@@ -146,6 +149,20 @@ public class ListActivity extends AppCompatActivity implements RapidFloatingActi
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
+
+        buscador = (SearchView) menu.findItem(R.id.app_bar_search).getActionView();
+
+        buscador.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
 
         return true;
     }
