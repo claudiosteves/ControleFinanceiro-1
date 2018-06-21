@@ -24,6 +24,8 @@ import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RFACLabelItem
 import com.wangjie.rapidfloatingactionbutton.contentimpl.labellist.RapidFloatingActionContentLabelList;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import senac.controlefinanceiro.entities.ContaDbHelper;
@@ -152,15 +154,75 @@ public class ListActivity extends AppCompatActivity implements RapidFloatingActi
 
         buscador = (SearchView) menu.findItem(R.id.app_bar_search).getActionView();
 
+        buscador.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                try {
+                    ListaPersonalizadaAdapter adapter = new ListaPersonalizadaAdapter(contas, ListActivity.this);
+                    listaContas.setAdapter(adapter);
+
+                    return false;
+                } catch (Exception e){
+                    Toast.makeText(getBaseContext(), "Ocorreu um erro...", Toast.LENGTH_LONG).show();
+                    Log.e("MainActivity", "onClose: " + e.getMessage());
+                    return false;
+                }
+            }
+        });
+
         buscador.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                return false;
+                try {
+                    List<Conta> filtro = new ArrayList<>();
+
+                    for (Conta conta : contas) {
+                        if (conta.getDescricao().toLowerCase().contains(query.toLowerCase())){
+                            filtro.add(conta);
+                        }
+                    }
+
+                    if (filtro.isEmpty()){
+                        ListaPersonalizadaAdapter adapter = new ListaPersonalizadaAdapter(contas, ListActivity.this);
+                        listaContas.setAdapter(adapter);
+                    } else {
+                        ListaPersonalizadaAdapter adapter = new ListaPersonalizadaAdapter(filtro, ListActivity.this);
+                        listaContas.setAdapter(adapter);
+                    }
+
+                    return true;
+                } catch (Exception e){
+                    Toast.makeText(getBaseContext(), "Ocorreu um erro...", Toast.LENGTH_LONG).show();
+                    Log.e("MainActivity", "onQueryTextSubmit: " + e.getMessage());
+                    return false;
+                }
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                return false;
+                try {
+                    List<Conta> filtro = new ArrayList<>();
+
+                    for (Conta conta : contas) {
+                        if (conta.getDescricao().toLowerCase().contains(newText.toLowerCase())){
+                            filtro.add(conta);
+                        }
+                    }
+
+                    if (filtro.isEmpty()){
+                        ListaPersonalizadaAdapter adapter = new ListaPersonalizadaAdapter(contas, ListActivity.this);
+                        listaContas.setAdapter(adapter);
+                    } else {
+                        ListaPersonalizadaAdapter adapter = new ListaPersonalizadaAdapter(filtro, ListActivity.this);
+                        listaContas.setAdapter(adapter);
+                    }
+
+                    return true;
+                } catch (Exception e){
+                    Toast.makeText(getBaseContext(), "Ocorreu um erro...", Toast.LENGTH_LONG).show();
+                    Log.e("MainActivity", "onQueryTextSubmit: " + e.getMessage());
+                    return false;
+                }
             }
         });
 
