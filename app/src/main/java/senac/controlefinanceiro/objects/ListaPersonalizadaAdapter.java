@@ -9,7 +9,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 import senac.controlefinanceiro.R;
 
@@ -52,7 +56,9 @@ public class ListaPersonalizadaAdapter extends BaseAdapter {
         ImageView imagem = (ImageView)
                 view.findViewById(R.id.icone);
 
-        valor.setText("R$ " + conta.getValor().toString());
+        NumberFormat nf = new DecimalFormat("#,##0.00", new DecimalFormatSymbols(new Locale("pt", "BR")));
+
+        valor.setText("R$ " + nf.format(conta.getValor()));
         descricao.setText(conta.getDescricao());
 
         if (conta instanceof Receita){
