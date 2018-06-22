@@ -12,5 +12,5 @@
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menu_config"
-        android:title="Configurações" />
+        android:title="Configurações"/>
 </menu>

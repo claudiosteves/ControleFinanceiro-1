@@ -2,9 +2,11 @@ package senac.controlefinanceiro.entities;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
@@ -71,11 +73,23 @@ public class ContaDbHelper extends SQLiteOpenHelper {
         }
     }
 
-    public List<Conta> Consultar(){
+    public List<Conta> Consultar(String ordem){
         try {
             SQLiteDatabase db = this.getReadableDatabase();
 
-            Cursor cursor = db.query(ContaContrato.TabelaConta.TABLE_NAME, null, null, null, null, null, null);
+            switch (ordem){
+                case "0":
+                    ordem = "data";
+                    break;
+                case "1":
+                    ordem = "valor DESC";
+                    break;
+                case "-1":
+                    ordem = "valor";
+                    break;
+            }
+
+            Cursor cursor = db.query(ContaContrato.TabelaConta.TABLE_NAME, null, null, null, null, null, ordem);
 
             List<Conta> contas = new ArrayList<>();
             while(cursor.moveToNext()) {

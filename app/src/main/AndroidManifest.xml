@@ -38,6 +38,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="senac.controlefinanceiro.ListActivity" />
         </activity>
+        <activity
+            android:name=".ConfigActivity"
+            android:label="@string/title_activity_config"
+            android:parentActivityName=".ListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="senac.controlefinanceiro.ListActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -1,8 +1,10 @@
 package senac.controlefinanceiro;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -80,7 +82,11 @@ public class ListActivity extends AppCompatActivity implements RapidFloatingActi
         });
 
         try {
-            contas = contaDbHelper.Consultar();
+
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+            String ordem_list = sharedPref.getString("ordem_list", "0");
+
+            contas = contaDbHelper.Consultar(ordem_list);
 
             //ArrayAdapter<String> adapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, contas);
 
@@ -132,7 +138,10 @@ public class ListActivity extends AppCompatActivity implements RapidFloatingActi
     protected void onResume() {
         super.onResume();
         try {
-            contas = contaDbHelper.Consultar();
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+            String ordem_list = sharedPref.getString("ordem_list", "0");
+
+            contas = contaDbHelper.Consultar(ordem_list);
             //ArrayAdapter<String> adapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, contas);
 
             ListaPersonalizadaAdapter adapter = new ListaPersonalizadaAdapter(contas, this);
@@ -151,6 +160,21 @@ public class ListActivity extends AppCompatActivity implements RapidFloatingActi
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
+
+        MenuItem config = menu.findItem(R.id.menu_config);
+        config.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                try {
+                    startActivity(new Intent(ListActivity.this, ConfigActivity.class));
+                    return true;
+                } catch (Exception e){
+                    Toast.makeText(getBaseContext(), "Ocorreu um erro...", Toast.LENGTH_LONG).show();
+                    Log.e("MainActivity", "onClose: " + e.getMessage());
+                    return false;
+                }
+            }
+        });
 
         buscador = (SearchView) menu.findItem(R.id.app_bar_search).getActionView();
 
