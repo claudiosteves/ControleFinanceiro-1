@@ -19,6 +19,7 @@ import java.util.Calendar;
 
 import senac.controlefinanceiro.entities.ContaContrato;
 import senac.controlefinanceiro.entities.ContaDbHelper;
+import senac.controlefinanceiro.objects.Conta;
 import senac.controlefinanceiro.objects.Despesa;
 import senac.controlefinanceiro.objects.Receita;
 
@@ -102,6 +103,8 @@ public class ReceitaActivity extends AppCompatActivity {
 
             ContaDbHelper contaDbHelper = new ContaDbHelper(this);
             contaDbHelper.Salvar(objReceita);
+
+            Conta.salvar(objReceita);
 
             //ListActivity.contas.add(despesa);
 

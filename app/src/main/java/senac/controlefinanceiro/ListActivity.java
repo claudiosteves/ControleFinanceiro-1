@@ -19,6 +19,12 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionButton;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionHelper;
 import com.wangjie.rapidfloatingactionbutton.RapidFloatingActionLayout;
@@ -86,13 +92,13 @@ public class ListActivity extends AppCompatActivity implements RapidFloatingActi
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
             String ordem_list = sharedPref.getString("ordem_list", "0");
 
-            contas = contaDbHelper.Consultar(ordem_list);
+            //contas = contaDbHelper.Consultar(ordem_list);
 
             //ArrayAdapter<String> adapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, contas);
 
-            ListaPersonalizadaAdapter adapter = new ListaPersonalizadaAdapter(contas, this);
+            //ListaPersonalizadaAdapter adapter = new ListaPersonalizadaAdapter(contas, this);
 
-            listaContas.setAdapter(adapter);
+            //listaContas.setAdapter(adapter);
 
 
             rfaLayout = findViewById(R.id.activity_main_rfal);
@@ -141,12 +147,45 @@ public class ListActivity extends AppCompatActivity implements RapidFloatingActi
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
             String ordem_list = sharedPref.getString("ordem_list", "0");
 
-            contas = contaDbHelper.Consultar(ordem_list);
+            //contas = contaDbHelper.Consultar(ordem_list);
             //ArrayAdapter<String> adapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, contas);
 
-            ListaPersonalizadaAdapter adapter = new ListaPersonalizadaAdapter(contas, this);
+            final ListaPersonalizadaAdapter adapter = new ListaPersonalizadaAdapter(contas, this);
 
             listaContas.setAdapter(adapter);
+
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference ref = database.getReference("conta");
+
+            ref.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    contas.add(dataSnapshot.getValue(Conta.class));
+                    adapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    contas.remove(dataSnapshot.getValue(Conta.class));
+                    adapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
         }
         catch (Exception e){
             Toast.makeText(this, "Ocorreu um erro...", Toast.LENGTH_LONG).show();
