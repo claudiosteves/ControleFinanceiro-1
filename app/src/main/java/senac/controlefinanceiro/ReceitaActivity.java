@@ -104,7 +104,7 @@ public class ReceitaActivity extends AppCompatActivity {
             ContaDbHelper contaDbHelper = new ContaDbHelper(this);
             contaDbHelper.Salvar(objReceita);
 
-            Conta.salvar(objReceita);
+            //Conta.salvar(objReceita);
 
             //ListActivity.contas.add(despesa);
 
