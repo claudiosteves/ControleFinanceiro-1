@@ -1,5 +1,7 @@
 package senac.controlefinanceiro;
 
+import android.Manifest;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -11,6 +13,8 @@ import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -41,6 +45,8 @@ public class ReceitaActivity extends AppCompatActivity {
     private Bitmap bitmap;
     private Camera camera;
     private int cameraId = 0;
+    final int CALLBACK_PERMISSIONS = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +64,8 @@ public class ReceitaActivity extends AppCompatActivity {
             descricaoReceita = findViewById(R.id.descricao_receita);
             BtnRemover = findViewById(R.id.remove);
             imageView = findViewById(R.id.camera);
+
+            validarPermissoes();
 
             // do we have a camera?
             if (!getPackageManager()
@@ -183,17 +191,19 @@ public class ReceitaActivity extends AppCompatActivity {
     public void tirarFoto(View view) {
         try {
             //Fazer a pergunta e validar permissão
-
+            validarPermissoes();
+/*
             camera.startPreview();
             camera.takePicture(null, null,
                     new PhotoHandler(getApplicationContext()));
+*/
 
-            /*Intent intent = new Intent();
+            Intent intent = new Intent();
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
 
-            startActivityForResult(intent, 1);*/
+            startActivityForResult(intent, 1);
         } catch (Exception e) {
             Toast.makeText(this, "Ocorreu um erro...", Toast.LENGTH_LONG).show();
             Log.e("Camera", "TirarFoto:" + e.getMessage());
@@ -241,6 +251,59 @@ public class ReceitaActivity extends AppCompatActivity {
             }
         }
         return cameraId;
+    }
+
+    private void validarPermissoes() {
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.CAMERA)) {
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{
+                                Manifest.permission.CAMERA,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        },
+                        CALLBACK_PERMISSIONS);
+
+
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{
+                                Manifest.permission.CAMERA,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        },
+                        CALLBACK_PERMISSIONS);
+
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case CALLBACK_PERMISSIONS: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 
     @Override
