@@ -1,8 +1,12 @@
 package senac.controlefinanceiro;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,8 +16,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -30,6 +38,8 @@ public class ReceitaActivity extends AppCompatActivity {
     EditText descricaoReceita;
     FloatingActionButton BtnRemover;
     Receita objReceita;
+    ImageView camera;
+    private Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +50,15 @@ public class ReceitaActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        dataReceita = findViewById(R.id.data_receita);
-        valorReceita = findViewById(R.id.valor_receita);
-        descricaoReceita = findViewById(R.id.descricao_receita);
-        BtnRemover = findViewById(R.id.remove);
-
         try {
+
+            dataReceita = findViewById(R.id.data_receita);
+            valorReceita = findViewById(R.id.valor_receita);
+            descricaoReceita = findViewById(R.id.descricao_receita);
+            BtnRemover = findViewById(R.id.remove);
+            camera = findViewById(R.id.camera);
+
+
             Bundle extras = getIntent().getExtras();
             if (extras != null) {
                 objReceita = (Receita) getIntent().getExtras().getSerializable("objReceita");
@@ -55,7 +68,7 @@ public class ReceitaActivity extends AppCompatActivity {
             } else {
                 BtnRemover.setVisibility(View.INVISIBLE);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(this, "Ocorreu um erro...", Toast.LENGTH_LONG).show();
             Log.e("Receita", "Erro OnCreate, " + e.getMessage());
         }
@@ -80,7 +93,7 @@ public class ReceitaActivity extends AppCompatActivity {
                         }
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
-        } catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(this, "Ocorreu um erro...", Toast.LENGTH_LONG).show();
             Log.e("Receita", e.getMessage());
         }
@@ -90,7 +103,7 @@ public class ReceitaActivity extends AppCompatActivity {
         try {
             int id = 0;
 
-            if (objReceita != null){
+            if (objReceita != null) {
                 id = objReceita.getId();
             }
 
@@ -110,7 +123,7 @@ public class ReceitaActivity extends AppCompatActivity {
 
             finish();
 
-        } catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(this, "Ocorreu um erro...", Toast.LENGTH_LONG).show();
             Log.e("Receita", e.getMessage());
         }
@@ -120,7 +133,7 @@ public class ReceitaActivity extends AppCompatActivity {
         try {
             int id = 0;
 
-            if (objReceita != null){
+            if (objReceita != null) {
                 id = objReceita.getId();
             }
 
@@ -145,9 +158,50 @@ public class ReceitaActivity extends AppCompatActivity {
                     })
                     .setNegativeButton("não", null)
                     .show();
-        } catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(this, "Ocorreu um erro...", Toast.LENGTH_LONG).show();
             Log.e("Receita", e.getMessage());
         }
+    }
+
+    public void tirarFoto(View view) {
+        try {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+            startActivityForResult(intent, 1);
+        } catch (Exception e) {
+            Toast.makeText(this, "Ocorreu um erro...", Toast.LENGTH_LONG).show();
+            Log.e("Camera", "TirarFoto:" + e.getMessage());
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        InputStream stream = null;
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK)
+            try {
+                // recyle unused bitmaps
+                if (bitmap != null) {
+                    bitmap.recycle();
+                }
+                stream = getContentResolver().openInputStream(data.getData());
+                bitmap = BitmapFactory.decodeStream(stream);
+
+                camera.setImageBitmap(bitmap);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                if (stream != null)
+                    try {
+                        stream.close();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+            }
     }
 }

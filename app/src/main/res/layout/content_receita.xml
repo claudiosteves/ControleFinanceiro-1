@@ -39,8 +39,8 @@
                 android:drawableLeft="@android:drawable/ic_menu_my_calendar"
                 android:ems="10"
                 android:hint="Data"
-                android:visibility="visible"
-                android:onClick="calendario"/>
+                android:onClick="calendario"
+                android:visibility="visible" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -55,7 +55,16 @@
                 android:layout_height="wrap_content"
                 android:hint="Descrição"
                 android:inputType="text" />
+
         </android.support.design.widget.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/camera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="tirarFoto"
+            app:srcCompat="@android:drawable/ic_menu_camera" />
 
     </LinearLayout>
 
